@@ -1,4 +1,4 @@
-#include "Dot.h"
+#include "Paint_dot.h"
 
 
 Dot::Dot(){
