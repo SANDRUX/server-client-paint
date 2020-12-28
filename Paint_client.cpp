@@ -29,6 +29,7 @@
 
 //using namespace std;
 
+int cfd;
 float red = 1.0, green = 0.0, blue = 0.0;
 int tmpx, tmpy; // store the first point when shape is line, rectangle or circle
 int brushSize = 4;
@@ -452,7 +453,17 @@ void motion(int x, int y)
             if (isRadial)
                 drawRadialBrush(x, y);
             else
+            {
+
+                int array[2];
+                array[0] = x;
+                array[1] = y;
+
                 drawDot(x, y);
+
+                PNET::send_packet(cfd, array, sizeof(array));
+                
+            }
         }
         if (shape == 5)
             drawBrush(x, y);
@@ -696,6 +707,16 @@ void printGuide()
 
 int main(int argc, char **argv)
 {
+    PNET::address_structure * addressOfSocket = new PNET::address_structure;
+
+    addressOfSocket->addr.sin_family = AF_INET;
+    addressOfSocket->addr.sin_port = htons(PORT_NUM);
+    inet_aton(ADDR, &addressOfSocket->addr.sin_addr);    
+
+    cfd = PNET::cl_socket_create();
+    send_request(cfd, addressOfSocket);
+
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(window_w, window_h);

@@ -21,13 +21,17 @@ namespace PNET
         struct sockaddr_in addr; //socket addres structure
     };
 
-    void sv_socket_create(struct address_structure *address);
+    int sv_socket_create(struct address_structure *address);
+
+    int cl_socket_create();
 
     void send_request(int sfd, struct address_structure *address);
 
-    void handle_request(int sfd, char *buff, size_t size);
+    void handle_request(int sfd);
 
-    void send_packet(int sfd, char *buff, size_t size);
+    int send_packet(int sfd, int *buff, size_t size);
+
+    int recieve_packet(int sfd, int *buff, size_t size);
 
 }
 

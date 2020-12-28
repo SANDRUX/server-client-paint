@@ -2,19 +2,22 @@
 
     using namespace PNET;
 
-    void sv_socket_create(struct address_structure *address)
+    int sv_socket_create(struct address_structure *address)
     {
-        memset(address, 0, sizeof(struct address_structure));
+        if (address == NULL)
+        {
+            memset(address, 0, sizeof(struct address_structure));
 
-        address->addr.sin_family = AF_INET;
-        address->addr.sin_port = htons(PORT_NUM);
-        inet_aton(ADDR, &address->addr.sin_addr);
+            address->addr.sin_family = AF_INET;
+            address->addr.sin_port = htons(PORT_NUM);
 
+            inet_aton(ADDR, &address->addr.sin_addr);
+        }
         int sfd = socket(AF_INET, SOCK_STREAM, 0);
 
         if (sfd == -1)
         {
-            printf("Error occured when creating socket!");
+            printf("Error occured when creating server socket!");
             exit(EXIT_FAILURE);
         }
 
@@ -29,6 +32,21 @@
             printf("Errorc occured when setting sockets behaviour as listener!");
             exit(EXIT_FAILURE);
         }
+
+        return sfd;
+    }
+
+    int cl_socket_create()
+    {
+        int sfd = socket(AF_INET, SOCK_STREAM, 0);
+
+        if (sfd == -1)
+        {
+            printf("Error occured when creating socket for client!");
+            exit(EXIT_FAILURE);
+        }
+
+        return sfd;
     }
 
     void send_request(int sfd, struct address_structure *address)
@@ -42,10 +60,8 @@
         }
     }
 
-    void handle_request(int sfd, char *buff, size_t size)
+    int handle_request(int sfd)
     {
-        for (;;)
-        {
             int cfd = accept(sfd, NULL, NULL);
 
             if (cfd == -1)
@@ -53,24 +69,45 @@
                 printf("Error occurred when accepting request!");
                 exit(EXIT_FAILURE);
             }
-
-            int numRead;
-
-
-            while ((numRead = read(cfd, buff, size)) > 0)
-            {
-                if (write(cfd, buff, size) != numRead)
-                {
-                    printf("Error ocurred when writing to socket!");
-                    exit(EXIT_FAILURE);
-                }
-            } 
-        }
-
-        
+ 
+        return cfd;        
     }
 
-    void send_packet(int sfd, char *buff, size_t size)
+    int recieve_packet(int sfd, int *buff, size_t size)
     {
-        send(sfd, buff, size, (int)NULL);
+        int numRead;
+
+        numRead = read(sfd, buff, size);
+
+        if (numRead == -1)
+        {
+            printf("Error occured when recieving packet from socket!");
+            exit(EXIT_FAILURE);
+        }
+        
+        return numRead;    
     }
+
+    int send_packet(int sfd, int *buff, size_t size)
+    {
+        int numWrite;
+
+       numWrite = write(sfd, buff, size);
+
+        if (numWrite == -1)
+        {
+            printf("Error occured when sending packet to socket!");
+            exit(EXIT_FAILURE);
+        }
+       
+       return numWrite;
+    }
+
+    // void close_socket(int sfd)
+    // {
+    //     if (close(sfd) == -1)
+    //     {
+    //         printf("Error occured when closing socket!");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }

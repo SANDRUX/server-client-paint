@@ -142,70 +142,70 @@ void drawDot(int mousex, int mousey)
     dots.push_back(newDot);
 }
 
-void drawBrush(int x, int y)
-{
-    for (int i = 0; i < brushSize; i++)
-    {
-        int randX = rand() % (brushSize + 1) - brushSize / 2 + x;
-        int randY = rand() % (brushSize + 1) - brushSize / 2 + y;
-        drawDot(randX, randY);
-    }
-}
+// void drawBrush(int x, int y)
+// {
+//     for (int i = 0; i < brushSize; i++)
+//     {
+//         int randX = rand() % (brushSize + 1) - brushSize / 2 + x;
+//         int randY = rand() % (brushSize + 1) - brushSize / 2 + y;
+//         drawDot(randX, randY);
+//     }
+// }
 
-void drawLine(int x1, int y1, int x2, int y2)
-{
-    bool changed = false;
-    // Bresenham's line algorithm is only good when abs(dx) >= abs(dy)
-    // So when abs(dx) < abs(dy), change axis x and y
-    if (abs(x2 - x1) < abs(y2 - y1))
-    {
-        int tmp1 = x1;
-        x1 = y1;
-        y1 = tmp1;
-        int tmp2 = x2;
-        x2 = y2;
-        y2 = tmp2;
-        changed = true;
-    }
-    int dx = x2 - x1;
-    int dy = y2 - y1;
-    int yi = 1;
-    int xi = 1;
-    if (dy < 0)
-    {
-        yi = -1;
-        dy = -dy;
-    }
-    if (dx < 0)
-    {
-        xi = -1;
-        dx = -dx;
-    }
-    int d = 2 * dy - dx;
-    int incrE = dy * 2;
-    int incrNE = 2 * dy - 2 * dx;
+// void drawLine(int x1, int y1, int x2, int y2)
+// {
+//     bool changed = false;
+//     // Bresenham's line algorithm is only good when abs(dx) >= abs(dy)
+//     // So when abs(dx) < abs(dy), change axis x and y
+//     if (abs(x2 - x1) < abs(y2 - y1))
+//     {
+//         int tmp1 = x1;
+//         x1 = y1;
+//         y1 = tmp1;
+//         int tmp2 = x2;
+//         x2 = y2;
+//         y2 = tmp2;
+//         changed = true;
+//     }
+//     int dx = x2 - x1;
+//     int dy = y2 - y1;
+//     int yi = 1;
+//     int xi = 1;
+//     if (dy < 0)
+//     {
+//         yi = -1;
+//         dy = -dy;
+//     }
+//     if (dx < 0)
+//     {
+//         xi = -1;
+//         dx = -dx;
+//     }
+//     int d = 2 * dy - dx;
+//     int incrE = dy * 2;
+//     int incrNE = 2 * dy - 2 * dx;
 
-    int x = x1, y = y1;
-    if (changed)
-        drawDot(y, x);
-    else
-        drawDot(x, y);
-    while (x != x2)
-    {
-        if (d <= 0)
-            d += incrE;
-        else
-        {
-            d += incrNE;
-            y += yi;
-        }
-        x += xi;
-        if (changed)
-            drawDot(y, x);
-        else
-            drawDot(x, y);
-    }
-}
+//     int x = x1, y = y1;
+//     if (changed)
+//         drawDot(y, x);
+//     else
+//         drawDot(x, y);
+//     while (x != x2)
+//     {
+//         if (d <= 0)
+//             d += incrE;
+//         else
+//         {
+//             d += incrNE;
+//             y += yi;
+//         }
+//         x += xi;
+//         if (changed)
+//             drawDot(y, x);
+//         else
+//             drawDot(x, y);
+//     }
+// }
 
 /**
  * We can use drawLine function to draw the rectangle
@@ -213,25 +213,25 @@ void drawLine(int x1, int y1, int x2, int y2)
  * Top-left corner specified by the first click,
  * and the bottom-right corner specified by a second click
  */
-void drawRectangle(int x1, int y1, int x2, int y2)
-{
-    if (x1 < x2 && y1 < y2)
-    {
-        drawLine(x1, y1, x2, y1);
-        drawLine(x2, y1, x2, y2);
-        drawLine(x2, y2, x1, y2);
-        drawLine(x1, y2, x1, y1);
-    }
-    else
-    {
-        time_t rawtime;
-        struct tm *timeinfo;
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-        std::cout << asctime(timeinfo)
-                  << "[Warning] The first click should be the top-left corner, the second click should be bottom-right corner.\n";
-    }
-}
+// void drawRectangle(int x1, int y1, int x2, int y2)
+// {
+//     if (x1 < x2 && y1 < y2)
+//     {
+//         drawLine(x1, y1, x2, y1);
+//         drawLine(x2, y1, x2, y2);
+//         drawLine(x2, y2, x1, y2);
+//         drawLine(x1, y2, x1, y1);
+//     }
+//     else
+//     {
+//         time_t rawtime;
+//         struct tm *timeinfo;
+//         time(&rawtime);
+//         timeinfo = localtime(&rawtime);
+//         std::cout << asctime(timeinfo)
+//                   << "[Warning] The first click should be the top-left corner, the second click should be bottom-right corner.\n";
+//     }
+// }
 
 /**
  * Midpoint circle algorithm
@@ -380,66 +380,66 @@ void keyboard(unsigned char key, int xIn, int yIn)
     }
 }
 
-void mouse(int bin, int state, int x, int y)
-{
-    if (bin == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-    {
-        if (isRandom)
-        {
-            srand(time(NULL));
-            red = float(rand()) / float(RAND_MAX);
-            green = float(rand()) / float(RAND_MAX);
-            blue = float(rand()) / float(RAND_MAX);
-        }
-        if (isEraser)
-        {
-            undoHistory.push_back(dots.size());
-            erase(x, y);
-        }
-        else
-        {
-            if (shape == 1)
-            {
-                undoHistory.push_back(dots.size());
-                if (isRadial)
-                    drawRadialBrush(x, y);
-                else
-                    drawDot(x, y);
-                    // TODO
-            }
-            else if (shape == 5)
-            {
-                undoHistory.push_back(dots.size());
-                drawBrush(x, y);
-            }
-            else
-            {
-                if (!isSecond)
-                {
-                    tmpx = x;
-                    tmpy = y;
-                    isSecond = true;
-                }
-                else
-                {
-                    if (undoHistory.back() != dots.size())
-                        undoHistory.push_back(dots.size());
-                    if (shape == 2)
-                        drawLine(tmpx, tmpy, x, y);
-                    else if (shape == 3)
-                        drawRectangle(tmpx, tmpy, x, y);
-                    else if (shape == 4)
-                        drawCircle(tmpx, tmpy, x, y);
-                    isSecond = false;
-                }
-            }
-        }
-        if (undoHistory.size() > 20)
-        {
-            undoHistory.pop_front();
-        }
-    }
-}
+// void mouse(int bin, int state, int x, int y)
+// {
+//     if (bin == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+//     {
+//         if (isRandom)
+//         {
+//             srand(time(NULL));
+//             red = float(rand()) / float(RAND_MAX);
+//             green = float(rand()) / float(RAND_MAX);
+//             blue = float(rand()) / float(RAND_MAX);
+//         }
+//         if (isEraser)
+//         {
+//             undoHistory.push_back(dots.size());
+//             erase(x, y);
+//         }
+//         else
+//         {
+//             if (shape == 1)
+//             {
+//                 undoHistory.push_back(dots.size());
+//                 if (isRadial)
+//                     drawRadialBrush(x, y);
+//                 else
+//                     drawDot(x, y);
+//                     // TODO
+//             }
+//             else if (shape == 5)
+//             {
+//                 undoHistory.push_back(dots.size());
+//                 drawBrush(x, y);
+//             }
+//             else
+//             {
+//                 if (!isSecond)
+//                 {
+//                     tmpx = x;
+//                     tmpy = y;
+//                     isSecond = true;
+//                 }
+//                 else
+//                 {
+//                     if (undoHistory.back() != dots.size())
+//                         undoHistory.push_back(dots.size());
+//                     if (shape == 2)
+//                         drawLine(tmpx, tmpy, x, y);
+//                     else if (shape == 3)
+//                         drawRectangle(tmpx, tmpy, x, y);
+//                     else if (shape == 4)
+//                         drawCircle(tmpx, tmpy, x, y);
+//                     isSecond = false;
+//                 }
+//             }
+//         }
+//         if (undoHistory.size() > 20)
+//         {
+//             undoHistory.pop_front();
+//         }
+//     }
+// }
 
 void motion(int x, int y)
 {
@@ -454,8 +454,8 @@ void motion(int x, int y)
             else
                 drawDot(x, y);
         }
-        if (shape == 5)
-            drawBrush(x, y);
+        // if (shape == 5)
+        //     drawBrush(x, y);
     }
 }
 
@@ -636,7 +636,7 @@ void callbackInit()
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
+    //glutMouseFunc(mouse);
     glutMotionFunc(motion);
     glutTimerFunc(17, FPS, 0);
 }
