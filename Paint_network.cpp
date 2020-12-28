@@ -1,21 +1,6 @@
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <string.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "Paint_socket.h"
 
-#define ADDR "127.0.0.1"
-#define PORT_NUM 50002
-
-namespace PNET
-{
-    struct address_structure
-    {
-        struct sockaddr_in addr; //socket addres structure
-    };
+    using namespace PNET;
 
     void sv_socket_create(struct address_structure *address)
     {
@@ -87,6 +72,5 @@ namespace PNET
 
     void send_packet(int sfd, char *buff, size_t size)
     {
-        send(sfd, buff, size, NULL);
+        send(sfd, buff, size, (int)NULL);
     }
-}
