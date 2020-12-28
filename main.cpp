@@ -1,5 +1,5 @@
 #include <time.h>
-#include "Dot.h"
+#include "Paint_dot.h"
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -11,9 +11,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <netdb.h>
+#include <stdio.h>
 
-#define ADDR "127.0.0.1"
-#define PORT_NUM 50002
+// #define ADDR "127.0.0.1"
+// #define PORT_NUM 50002
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -45,51 +46,56 @@ std::list<int> undoHistory; // record for undo, maximum 20 shapes in history
 std::list<int> redoHistory; // record for redo, maximum 20 shapes in history
 std::vector<Dot> redoDots;  // store the dots after undo temporaly
 
-struct address_structure
-{
-    struct sockaddr_in addr; //socket addres structure
-};
+// struct address_structure
+// {
+//     struct sockaddr_in addr; //socket addres structure
+// };
 
 
-void socket_create(struct address_structure * address)
-{
-    memset(address, 0, sizeof(struct address_structure));
+// void socket_create(struct address_structure * address)
+// {
+//     memset(address, 0, sizeof(struct address_structure));
 
-    address->addr.sin_family = AF_INET;
-    address->addr.sin_port = htons(PORT_NUM);
-    inet_aton(ADDR, &address->addr.sin_addr);
+//     address->addr.sin_family = AF_INET;
+//     address->addr.sin_port = htons(PORT_NUM);
+//     inet_aton(ADDR, &address->addr.sin_addr);
 
-    int sfd = socket(AF_INET, SOCK_STREAM, 0);
+//     int sfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sfd == -1)
-    {
-        printf("Error occured when creating socket!");
-        exit(EXIT_FAILURE);
-    }
+//     if (sfd == -1)
+//     {
+//         printf("Error occured when creating socket!");
+//         exit(EXIT_FAILURE);
+//     }
 
-    if (bind(sfd, (struct sockaddr *)&address->addr, sizeof(struct sockaddr)) == -1)
-    {
-        printf("Error occured when binding socket!");
-        exit(EXIT_FAILURE);
-    }
+//     if (bind(sfd, (struct sockaddr *)&address->addr, sizeof(struct sockaddr)) == -1)
+//     {
+//         printf("Error occured when binding socket!");
+//         exit(EXIT_FAILURE);
+//     }
 
-    if (listen(sfd, 1) == -1)
-    {
-        printf("Errorc occured when setting sockets behaviour as listener!");
-        exit(EXIT_FAILURE);
-    }
-}
+//     if (listen(sfd, 1) == -1)
+//     {
+//         printf("Errorc occured when setting sockets behaviour as listener!");
+//         exit(EXIT_FAILURE);
+//     }
+// }
 
-void recieve_packet(int sfd, char * buff, size_t size)
-{
-    int cfd = accept(sfd, NULL, NULL);
+// void recieve_packet(int sfd, char * buff, size_t size)
+// {
+//     int cfd = accept(sfd, NULL, NULL);
 
-    while (1)
-    {
-        read(cfd, buff, size);
-    }
+//     while (1)
+//     {
+//         read(cfd, buff, size);
+//     }
 
-}
+// }
+
+// void send_packet(int sfd, char * buff, size_t size)
+// {
+
+// }
 
 
 
