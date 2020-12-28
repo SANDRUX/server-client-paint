@@ -456,9 +456,12 @@ void motion(int x, int y)
             else
             {
 
-                int array[2];
+                int array[5];
                 array[0] = x;
                 array[1] = y;
+                array[2] = red;
+                array[3] = green;
+                array[4] = blue;
 
                 drawDot(x, y);
 

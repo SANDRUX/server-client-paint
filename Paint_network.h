@@ -29,7 +29,7 @@ namespace PNET
 
     void send_request(int sfd, struct address_structure *address); //send request to server socket
 
-    void handle_request(int sfd); //accept connection from client
+    int handle_request(int sfd); //accept connection from client
 
     int send_packet(int sfd, int *buff, size_t size); //sebd data package 
 
