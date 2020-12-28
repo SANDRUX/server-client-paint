@@ -1,6 +1,6 @@
 #include <time.h>
 #include "Paint_dot.h"
-#include "Paint_socket.h"
+#include "Paint_network.h"
 #include <iostream>
 #include <cmath>
 #include <string>

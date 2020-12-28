@@ -1,6 +1,6 @@
 #include <time.h>
 #include "Paint_dot.h"
-#include "Paint_socket.h"
+#include "Paint_network.h"
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -29,7 +29,8 @@
 
 //using namespace std;
 
-int cfd;
+int cfd; //cliend socket descriptor
+
 float red = 1.0, green = 0.0, blue = 0.0;
 int tmpx, tmpy; // store the first point when shape is line, rectangle or circle
 int brushSize = 4;
