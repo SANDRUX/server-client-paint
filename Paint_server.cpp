@@ -14,6 +14,7 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <thread>
 
 #define ADDR "127.0.0.1"
 #define PORT_NUM 50002
@@ -722,7 +723,8 @@ int main(int argc, char **argv)
 
     cfd = PNET::handle_request(sfd);
 
-    pthread_create(NULL, NULL, ThreadFunc, NULL);
+    std::thread thread_obj(ThreadFunc, nullptr);
+    thread_obj.join();
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);

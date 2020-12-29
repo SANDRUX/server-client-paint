@@ -2,7 +2,7 @@
 
     //using namespace PNET;
 
-    int PNET::sv_socket_create(struct address_structure * address)
+    int PNET::sv_socket_create(struct PNET::address_structure * address)
     {
         if (address == NULL)
         {
@@ -49,7 +49,7 @@
         return sfd;
     }
 
-    void PNET::send_request(int sfd, struct address_structure *address)
+    void PNET::send_request(int sfd, struct PNET::address_structure *address)
     {
         int status = connect(sfd, (struct sockaddr *)address, sizeof(struct PNET::address_structure));
 
