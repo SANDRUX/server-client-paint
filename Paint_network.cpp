@@ -2,7 +2,7 @@
 
     //using namespace PNET;
 
-    int PNET::sv_socket_create(struct address_structure * address)
+    int PNET::sv_socket_create(struct PNET::address_structure * address)
     {
         if (address == NULL)
         {
