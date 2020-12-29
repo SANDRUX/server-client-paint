@@ -14,10 +14,9 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <pthread.h>
-#include <thread>
 
-#define ADDR "127.0.0.1"
-#define PORT_NUM 50002
+// #define ADDR "10.127.2.232"
+// #define PORT_NUM 50002
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -705,7 +704,7 @@ void* ThreadFunc(void* arg)
     while (1)
     {
         PNET::recieve_packet(cfd, arr, sizeof(arr));
-        myDot->setPosition(arr[0], arr[1]);
+        myDot->setPosition(arr[0], window_h - arr[1]);
         myDot->setColour(arr[2], arr[3], arr[4]);
         dots.push_back(*myDot);
     }
@@ -713,6 +712,8 @@ void* ThreadFunc(void* arg)
 
 int main(int argc, char **argv)
 {
+    pthread_t tid;
+
     PNET::address_structure * addressOfSocket = new PNET::address_structure;
 
     addressOfSocket->addr.sin_family = AF_INET;
@@ -723,8 +724,7 @@ int main(int argc, char **argv)
 
     cfd = PNET::handle_request(sfd);
 
-    std::thread thread_obj(ThreadFunc, nullptr);
-    thread_obj.join();
+    pthread_create(&tid, NULL, ThreadFunc, addressOfSocket);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
