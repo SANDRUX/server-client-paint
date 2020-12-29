@@ -1,12 +1,12 @@
 #include "Paint_network.h"
 
-    using namespace PNET;
+    //using namespace PNET;
 
-    int sv_socket_create(struct address_structure *address)
+    int PNET::sv_socket_create(struct address_structure * address)
     {
         if (address == NULL)
         {
-            memset(address, 0, sizeof(struct address_structure));
+            memset(address, 0, sizeof(struct PNET::address_structure));
 
             address->addr.sin_family = AF_INET;
             address->addr.sin_port = htons(PORT_NUM);
@@ -36,7 +36,7 @@
         return sfd;
     }
 
-    int cl_socket_create()
+    int PNET::cl_socket_create()
     {
         int sfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -49,9 +49,9 @@
         return sfd;
     }
 
-    void send_request(int sfd, struct address_structure *address)
+    void PNET::send_request(int sfd, struct address_structure *address)
     {
-        int status = connect(sfd, (struct sockaddr *)address, sizeof(struct address_structure));
+        int status = connect(sfd, (struct sockaddr *)address, sizeof(struct PNET::address_structure));
 
         if (status == -1)
         {
@@ -60,7 +60,7 @@
         }
     }
 
-    int handle_request(int sfd)
+    int PNET::handle_request(int sfd)
     {
             int cfd = accept(sfd, NULL, NULL);
 
@@ -73,7 +73,7 @@
         return cfd;        
     }
 
-    int recieve_packet(int sfd, int *buff, size_t size)
+    int PNET::recieve_packet(int sfd, int *buff, size_t size)
     {
         int numRead;
 
@@ -88,7 +88,7 @@
         return numRead;    
     }
 
-    int send_packet(int sfd, int *buff, size_t size)
+    int PNET::send_packet(int sfd, int *buff, size_t size)
     {
         int numWrite;
 

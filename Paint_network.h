@@ -1,5 +1,5 @@
-#ifndef PAINT_SOCKET_H
-#define PAINT_SOCKET_H
+#ifndef PAINT_NETWORK_H
+#define PAINT_NETWORK_H
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
