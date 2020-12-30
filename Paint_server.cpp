@@ -30,6 +30,8 @@
 
 //using namespace std;
 
+int sfd, cfd;
+
 float red = 1.0, green = 0.0, blue = 0.0;
 int tmpx, tmpy; // store the first point when shape is line, rectangle or circle
 int brushSize = 4;
@@ -83,6 +85,11 @@ void clear()
 void quit()
 {
     std::cout << "Thank you for using this Paint tool! Goodbye!" << std::endl;
+
+    PNET::close_socket(cfd);
+
+    PNET::close_socket(sfd);
+
     exit(0);
 }
 // void undo()
@@ -694,8 +701,6 @@ void printGuide()
               << "-> redo, the history can keep maximum 20 records.\n"
               << "################################# Paint #################################" << std::endl;
 }
-
-int sfd, cfd;
 
 void* ThreadFunc(void* arg)
 {

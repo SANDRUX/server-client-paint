@@ -35,6 +35,7 @@ namespace PNET
 
     int recieve_packet(int sfd, int *buff, size_t size); //recieve data package
 
+    void close_socket(int sfd); //close the socket
 }
 
 #endif

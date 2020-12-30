@@ -84,6 +84,9 @@ void clear()
 void quit()
 {
     std::cout << "Thank you for using this Paint tool! Goodbye!" << std::endl;
+
+    PNET::close_socket(cfd);
+
     exit(0);
 }
 // void undo()

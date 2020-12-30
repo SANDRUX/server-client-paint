@@ -103,11 +103,11 @@
        return numWrite;
     }
 
-    // void close_socket(int sfd)
-    // {
-    //     if (close(sfd) == -1)
-    //     {
-    //         printf("Error occured when closing socket!");
-    //         exit(EXIT_FAILURE);
-    //     }
-    // }
+    void PNET::close_socket(int sfd)
+    {
+        if (close(sfd) == -1)
+        {
+            printf("Error occured when closing socket!");
+            exit(EXIT_FAILURE);
+        }
+    }
