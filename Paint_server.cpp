@@ -740,15 +740,16 @@ int main(int argc, char **argv)
 
     cfd = PNET::handle_request(sfd);
 
-    char buffer[20];
-    char clBuffer[20];
+    int bufferLength = 150;
+    char buffer[bufferLength];
+    char clBuffer[bufferLength];
     char spec[6] = "world";
     char response = 0;
 
 
     while (1)
     {
-        scanf("%s", buffer);
+        fgets(buffer, bufferLength, stdin);
 
         if (strncmp(buffer, spec, sizeof(spec)) == 0)
         {

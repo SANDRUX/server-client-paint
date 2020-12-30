@@ -737,8 +737,9 @@ int main(int argc, char **argv)
     cfd = PNET::cl_socket_create();
     send_request(cfd, addressOfSocket);
 
-    char buffer[20];
-    char svBuffer[20];
+    int bufferLength = 150;
+    char buffer[bufferLength];
+    char svBuffer[bufferLength];
     char spec[6] = "world";
     char response = 0;
     
@@ -757,7 +758,7 @@ int main(int argc, char **argv)
 
         printf("%s\n", svBuffer);
 
-        scanf("%s", buffer);
+        fgets(buffer, bufferLength, stdin);
 
         if (strncmp(buffer, spec, sizeof(spec)) == 0)
         {
