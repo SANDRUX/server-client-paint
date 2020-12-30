@@ -45,11 +45,10 @@ float window_h = 500;
 
 int shape = 1; // 1:point, 2:line, 3:rectangle, 4:circle, 5:brush
 
-std::vector<Dot> dots;		// store all the points until clear
+std::vector<Dot> dots;      // store all the points until clear
 std::list<int> undoHistory; // record for undo, maximum 20 shapes in history
 std::list<int> redoHistory; // record for redo, maximum 20 shapes in history
 std::vector<Dot> redoDots;  // store the dots after undo temporaly
-
 
 void display(void)
 {
@@ -377,12 +376,12 @@ void keyboard(unsigned char key, int xIn, int yIn)
             }
         }
         break;
-    // case 'u':
-    //     undo();
-    //     break;
-    // case 'r':
-    //     redo();
-    //     break;
+        // case 'u':
+        //     undo();
+        //     break;
+        // case 'r':
+        //     redo();
+        //     break;
     }
 }
 
@@ -411,7 +410,7 @@ void mouse(int bin, int state, int x, int y)
                     drawRadialBrush(x, y);
                 else
                     drawDot(x, y);
-                    // TODO
+                // TODO
             }
             else if (shape == 5)
             {
@@ -470,7 +469,6 @@ void motion(int x, int y)
                 drawDot(x, y);
 
                 PNET::send_packet(cfd, array, sizeof(array));
-                
             }
         }
         if (shape == 5)
@@ -500,12 +498,12 @@ void processMainMenu(int value)
     case 1:
         clear();
         break;
-    // case 2:
-    //     undo();
-    //     break;
-    // case 3:
-    //     redo();
-    //     break;
+        // case 2:
+        //     undo();
+        //     break;
+        // case 3:
+        //     redo();
+        //     break;
     }
 }
 
@@ -730,26 +728,50 @@ int main(int argc, char **argv)
 {
     pthread_t tid;
 
-    PNET::address_structure * addressOfSocket = new PNET::address_structure;
+    PNET::address_structure *addressOfSocket = new PNET::address_structure;
 
     addressOfSocket->addr.sin_family = AF_INET;
     addressOfSocket->addr.sin_port = htons(PORT_NUM);
-    inet_aton(ADDR, &addressOfSocket->addr.sin_addr);    
+    inet_aton(ADDR, &addressOfSocket->addr.sin_addr);
 
     cfd = PNET::cl_socket_create();
     send_request(cfd, addressOfSocket);
 
-    char keyword[20];
-    char temp[20];
-
-    cin >> keyword;
-
-    if (write(cfd, keyword, sizeof(keyword)) == -1)
+    char buffer[20];
+    char svBuffer[20];
+    char spec[6] = "world";
+    char response = 0;
+    
+    while (1)
     {
-        printf("Error occurred when sending data to socket!");
-        exit(EXIT_FAILURE);
-    }
+        if (read(cfd, svBuffer, sizeof(svBuffer)) == -1)
+        {
+            printf("Error occurred when recieving data from socket!");
+            exit(EXIT_FAILURE);
+        }
 
+        if (svBuffer[0] == 0)
+        {
+            break;
+        }
+
+        printf("%s\n", svBuffer);
+
+        scanf("%s", buffer);
+
+        if (strncmp(buffer, spec, sizeof(spec)) == 0)
+        {
+            write(cfd, &response, sizeof(char));
+            break;
+        }
+
+        if (write(cfd, buffer, sizeof(buffer)) == -1)
+        {
+            printf("Error occurred when sending data to socket!");
+            exit(EXIT_FAILURE);
+        }    
+    }
+    
     pthread_create(&tid, NULL, ThreadFunc, addressOfSocket);
 
     glutInit(&argc, argv);
