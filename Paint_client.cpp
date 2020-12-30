@@ -13,6 +13,7 @@
 #include <string.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <pthread.h>
 
 // #define ADDR "127.0.0.1"
 // #define PORT_NUM 50002
@@ -712,8 +713,23 @@ void printGuide()
               << "################################# Paint #################################" << std::endl;
 }
 
+void *ThreadFunc(void *arg)
+{
+    Dot *myDot = new Dot();
+    int arr[5];
+    while (1)
+    {
+        PNET::recieve_packet(cfd, arr, sizeof(arr));
+        myDot->setPosition(arr[0], window_h - arr[1]);
+        myDot->setColour(arr[2], arr[3], arr[4]);
+        dots.push_back(*myDot);
+    }
+}
+
 int main(int argc, char **argv)
 {
+    pthread_t tid;
+
     PNET::address_structure * addressOfSocket = new PNET::address_structure;
 
     addressOfSocket->addr.sin_family = AF_INET;
@@ -723,6 +739,18 @@ int main(int argc, char **argv)
     cfd = PNET::cl_socket_create();
     send_request(cfd, addressOfSocket);
 
+    char keyword[20];
+    char temp[20];
+
+    cin >> keyword;
+
+    if (write(cfd, keyword, sizeof(keyword)) == -1)
+    {
+        printf("Error occurred when sending data to socket!");
+        exit(EXIT_FAILURE);
+    }
+
+    pthread_create(&tid, NULL, ThreadFunc, addressOfSocket);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);

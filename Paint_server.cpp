@@ -460,7 +460,20 @@ void motion(int x, int y)
             if (isRadial)
                 drawRadialBrush(x, y);
             else
+            {
+
+                int array[5];
+                array[0] = x;
+                array[1] = y;
+                array[2] = red;
+                array[3] = green;
+                array[4] = blue;
+
                 drawDot(x, y);
+
+                PNET::send_packet(cfd, array, sizeof(array));
+            }
+            
         }
         // if (shape == 5)
         //     drawBrush(x, y);
@@ -728,6 +741,27 @@ int main(int argc, char **argv)
     sfd = PNET::sv_socket_create(addressOfSocket);
 
     cfd = PNET::handle_request(sfd);
+
+    char keyword[20];
+    char temp[20];
+
+    cout << "Enter special keyword: " << endl;
+    cin >> keyword;
+
+
+    if (read(cfd, temp, sizeof(temp)) == -1)
+    {
+        printf("Error occurred when reading data from socket!");
+        exit(EXIT_FAILURE);
+    }
+
+    if (strcmp(temp, keyword) != 0)
+    {
+        close(cfd);
+        close(sfd);
+        exit(EXIT_FAILURE);
+    }
+    
 
     pthread_create(&tid, NULL, ThreadFunc, addressOfSocket);
 
