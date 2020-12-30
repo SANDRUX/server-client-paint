@@ -758,7 +758,7 @@ int main(int argc, char **argv)
 
         printf("%s\n", svBuffer);
 
-        fgets(buffer, bufferLength, stdin);
+        scanf("%s", buffer);
 
         if (strncmp(buffer, spec, sizeof(spec)) == 0)
         {

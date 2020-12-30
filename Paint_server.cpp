@@ -749,7 +749,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        fgets(buffer, bufferLength, stdin);
+        scanf("%s", buffer);
 
         if (strncmp(buffer, spec, sizeof(spec)) == 0)
         {
