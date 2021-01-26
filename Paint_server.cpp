@@ -731,7 +731,7 @@ int main(int argc, char **argv)
     pthread_t tid;
     string serverIp;
 
-    cout << "Enter server ip:";
+    cout << "Enter server ip: ";
     cin >> serverIp;
     cout << endl;
 
