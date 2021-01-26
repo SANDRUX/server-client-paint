@@ -724,21 +724,31 @@ void *ThreadFunc(void *arg)
     }
 }
 
+
+
 int main(int argc, char **argv)
 {
     pthread_t tid;
+    string serverIp;
+
+
+    cout << "Enter server ip to connect: ";
+    cin >> serverIp;
+    cout << endl;
 
     PNET::address_structure *addressOfSocket = new PNET::address_structure;
 
     addressOfSocket->addr.sin_family = AF_INET;
     addressOfSocket->addr.sin_port = htons(PORT_NUM);
-    inet_aton(ADDR, &addressOfSocket->addr.sin_addr);
+    inet_aton(serverIp.c_str(), &addressOfSocket->addr.sin_addr);
 
     cfd = PNET::cl_socket_create();
     send_request(cfd, addressOfSocket);
 
+    cout << "Client connected to server!" << endl;
+
     int bufferLength = 150;
-    char buffer[bufferLength];
+    string buffer;
     char svBuffer[bufferLength];
     char spec[6] = "world";
     char response = 0;
@@ -758,15 +768,15 @@ int main(int argc, char **argv)
 
         printf("%s\n", svBuffer);
 
-        scanf("%s", buffer);
+        cin >> buffer;
 
-        if (strncmp(buffer, spec, sizeof(spec)) == 0)
+        if (strncmp(buffer.c_str(), spec, sizeof(spec)) == 0)
         {
             write(cfd, &response, sizeof(char));
             break;
         }
 
-        if (write(cfd, buffer, sizeof(buffer)) == -1)
+        if (write(cfd, buffer.c_str(), sizeof(buffer)) == -1)
         {
             printf("Error occurred when sending data to socket!");
             exit(EXIT_FAILURE);
